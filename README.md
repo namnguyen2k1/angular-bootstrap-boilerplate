@@ -52,3 +52,70 @@ npm start:prod # production
 npm build # production
 npm build:dev # development
 ```
+
+---
+
+## 🔧 Git Hooks Setup (Husky, Lint-Staged, Commitlint)
+
+After cloning the project and installing dependencies, follow these steps to ensure Git hooks are set up correctly:
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Check if `.husky` directory exists
+
+If `.husky` is not present (e.g., after a fresh clone), run:
+
+```bash
+npm run prepare
+```
+
+This will initialize the `.husky` directory.
+
+### 3. Create hook files manually (if needed)
+
+Inside the `.husky` folder, create two files:
+
+#### `.husky/pre-commit`
+
+```bash
+npx lint-staged
+```
+
+#### `.husky/commit-msg`
+
+```bash
+npx commitlint --edit
+```
+
+### 4. Verify file permissions
+
+Git hooks require executable permissions. Check permissions using:
+
+```bash
+ls -la .husky
+```
+
+If the files look like this:
+
+```
+-rw-rw-r-- ... pre-commit     # not executable
+-rw-rw-r-- ... commit-msg     # not executable
+```
+
+You need to update the permissions.
+
+### 5. Make the files executable
+
+```bash
+chmod +x .husky/pre-commit
+chmod +x .husky/commit-msg
+```
+
+Now, when you make a commit, Husky will automatically:
+
+- Run ESLint and Prettier on staged files (`lint-staged`)
+- Validate commit message format (`commitlint`)
