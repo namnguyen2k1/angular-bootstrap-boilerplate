@@ -1,0 +1,8 @@
+@use "tailwindcss/utilities.css";
+@use "./styles/font";
+
+body {
+  * {
+    font-family: "Poppins";
+  }
+}
