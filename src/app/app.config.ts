@@ -1,11 +1,7 @@
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { ApplicationConfig, provideExperimentalZonelessChangeDetection } from "@angular/core";
-import {
-  PreloadAllModules,
-  provideRouter,
-  withPreloading,
-  withViewTransitions,
-} from "@angular/router";
-
+import { provideRouter, withComponentInputBinding, withViewTransitions } from "@angular/router";
+import { errorInterceptor, loggerInterceptor, switchServiceInterceptor } from "@core/interceptors";
 import { routes } from "./app.routes";
 
 export const appConfig: ApplicationConfig = {
@@ -14,8 +10,19 @@ export const appConfig: ApplicationConfig = {
     provideRouter(
       routes,
       withViewTransitions(),
-      withPreloading(PreloadAllModules),
-      //
+      withComponentInputBinding(),
+      // ...
+    ),
+    provideHttpClient(
+      withInterceptors(
+        [
+          switchServiceInterceptor,
+          loggerInterceptor,
+          errorInterceptor,
+          // ...
+        ],
+        // ...
+      ),
     ),
   ],
 };

@@ -1,7 +1,10 @@
 @use "tailwindcss/utilities.css";
 @use "./styles/font";
+@use "./styles/utils";
 
 body {
+  background-color: darkgrey;
+
   * {
     font-family: "Poppins";
   }

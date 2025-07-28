@@ -1,13 +1,14 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
-import { IconModule } from "./shared/icon.module";
 
 @Component({
   selector: "app-root",
-  imports: [RouterOutlet, IconModule],
-  templateUrl: "./app.component.html",
-  styleUrl: "./app.component.scss",
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterOutlet],
   standalone: true,
+  template: `
+    <div class="!max-w-[1200px] mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+  `,
 })
 export class AppComponent {}

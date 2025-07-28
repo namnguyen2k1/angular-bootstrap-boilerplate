@@ -28,6 +28,150 @@
 
 ---
 
+## 📁 Project Structure Overview
+
+This Angular project is structured using feature-based architecture and fully adopts the standalone component API, promoting modularity, reusability, and scalability.
+
+#### Key Highlights
+
+`Standalone Components`: All components and routes are declared with standalone: true, eliminating the need for NgModules.
+
+`Feature-Based Organization`: Each domain (e.g., auth, post, user) is self-contained, including APIs, models, pages, services, and routing.
+
+`Separation of Concerns`: Shared utilities, guards, interceptors, and services are centralized in core/ and shared/.
+
+`Layout-Driven Routing`: Layouts (e.g., auth-layout, home-layout) structure route groups with their own UI shells.
+
+#### Folder Overview
+
+`app/`: Root configuration and bootstrap files.
+
+`core/`: Application-wide logic – guards, interceptors, constants, services, and utilities.
+
+`features/`: Modular, domain-specific features with full encapsulation of UI, logic, and routing.
+
+`layouts/`: Defines structural layouts with associated routes.
+
+`shared/`: Reusable UI components, directives, pipes, and design utilities.
+
+`styles/`: Global styles and SCSS utilities.
+
+`environments/`: Standard Angular environment configuration.
+
+```bash
+src
+├── app
+│   ├── app.component.ts
+│   ├── app.config.ts
+│   ├── app.routes.ts
+│   ├── core
+│   │   ├── constants
+│   │   │   ├── api-service.constant.ts
+│   │   │   └── index.ts
+│   │   ├── guards
+│   │   │   ├── auth.guard.ts
+│   │   │   ├── index.ts
+│   │   │   ├── integer-param.guard.ts
+│   │   │   ├── no-auth.guard.ts
+│   │   │   └── role.guard.ts
+│   │   ├── interceptors
+│   │   │   ├── error.interceptor.ts
+│   │   │   ├── index.ts
+│   │   │   ├── logger.interceptor.ts
+│   │   │   └── switch-service.interceptor.ts
+│   │   ├── models
+│   │   │   ├── index.ts
+│   │   │   └── session.model.ts
+│   │   ├── services
+│   │   │   ├── index.ts
+│   │   │   └── session.service.ts
+│   │   └── utils
+│   │       ├── fetch-state
+│   │       │   ├── fetch-state.type.ts
+│   │       │   └── to-fetch-state.operator.ts
+│   │       └── index.ts
+│   ├── features
+│   │   ├── auth
+│   │   │   ├── apis
+│   │   │   │   └── index.ts
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── components
+│   │   │   │   └── index.ts
+│   │   │   ├── models
+│   │   │   │   └── index.ts
+│   │   │   ├── pages
+│   │   │   │   ├── login.component.ts
+│   │   │   │   └── register.component.ts
+│   │   │   └── services
+│   │   │       └── index.ts
+│   │   ├── post
+│   │   │   ├── apis
+│   │   │   │   ├── index.ts
+│   │   │   │   └── post.api.ts
+│   │   │   ├── components
+│   │   │   │   ├── index.ts
+│   │   │   │   └── post.component.ts
+│   │   │   ├── models
+│   │   │   │   ├── index.ts
+│   │   │   │   └── post.model.ts
+│   │   │   ├── pages
+│   │   │   │   ├── post-detail.component.ts
+│   │   │   │   └── post-listing.component.ts
+│   │   │   ├── post.routes.ts
+│   │   │   └── services
+│   │   │       ├── index.ts
+│   │   │       └── post.service.ts
+│   │   └── user
+│   │       ├── apis
+│   │       │   ├── index.ts
+│   │       │   └── user.api.ts
+│   │       ├── components
+│   │       │   ├── index.ts
+│   │       │   └── user.component.ts
+│   │       ├── models
+│   │       │   ├── index.ts
+│   │       │   └── user.model.ts
+│   │       ├── pages
+│   │       │   ├── user-detail.component.ts
+│   │       │   └── user-listing.component.ts
+│   │       ├── services
+│   │       │   ├── index.ts
+│   │       │   └── user.service.ts
+│   │       └── user.routes.ts
+│   ├── layouts
+│   │   ├── auth-layout
+│   │   │   ├── auth-layout.component.ts
+│   │   │   └── auth-layout.routes.ts
+│   │   ├── forbidden-page.component.ts
+│   │   ├── home-layout
+│   │   │   ├── home-layout.component.ts
+│   │   │   └── home-layout.routes.ts
+│   │   ├── maintenance-page.component.ts
+│   │   └── not-found-page.component.ts
+│   └── shared
+│       ├── components
+│       │   └── index.ts
+│       ├── directives
+│       │   └── index.ts
+│       ├── icons
+│       │   └── icon.module.ts
+│       ├── pipes
+│       │   └── index.ts
+│       └── ui
+│           └── index.ts
+├── environments
+│   ├── environment.prod.ts
+│   └── environment.ts
+├── index.html
+├── main.ts
+├── styles
+│   ├── _font.scss
+│   └── _utils.scss
+└── styles.scss
+```
+
+---
+
 ## 🛠️ Setup Instructions
 
 1. Clone the repository:
