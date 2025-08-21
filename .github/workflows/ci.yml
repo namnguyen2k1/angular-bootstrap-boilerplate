@@ -1,0 +1,147 @@
+name: CI/CD Angular + Docker + Vercel
+
+on:
+  push:
+    branches:
+      - develop
+      - release-*
+      - master
+
+env:
+  NODE_VERSION: 24
+  APP_NAME: angular-bb
+
+jobs:
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout Source
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 3. Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 4. Install Dependencies
+        run: npm ci
+
+      - name: 5. Run Linter
+        run: npm run lint
+
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. Checkout Source
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 3. Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 4. Install Dependencies
+        run: npm ci
+
+      - name: 5. Run Tests
+        run: npm run test
+
+  build-frontend:
+    name: Build Angular Frontend
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - name: 1. Checkout Source
+        uses: actions/checkout@v4
+
+      - name: 2. Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 3. Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 4. Install Dependencies
+        run: npm ci
+
+      - name: 5. Build Angular App
+        run: npm run build -- --configuration production
+
+      - name: 6. Upload Angular Dist Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+  build-image:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: build-frontend
+    env:
+      DH_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DH_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      - name: 1. Checkout Source
+        uses: actions/checkout@v4
+
+      - name: 2. Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker-container
+          buildkitd-flags: --debug
+
+      - name: 3. Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ env.DH_USERNAME }}
+          password: ${{ env.DH_TOKEN }}
+
+      - name: 4. Build & Push Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DH_USERNAME }}/angular-topics:latest
+          cache-from: type=registry,ref=${{ env.DH_USERNAME }}/angular-topics:latest
+          cache-to: type=registry,ref=${{ env.DH_USERNAME }}/angular-topics:latest,mode=max
+
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: build-frontend
+    steps:
+      - name: 1. Download Angular Dist Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: 2. Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: 3. Deploy to Vercel
+        run: vercel dist/${{ env.APP_NAME }}/browser --prod --yes --token=${{ secrets.VERCEL_TOKEN }}

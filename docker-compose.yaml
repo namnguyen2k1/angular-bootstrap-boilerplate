@@ -1,0 +1,7 @@
+services:
+  angular-bb:
+    build: .
+    image: angular-bb:latest
+    ports:
+      - "4200:80"
+    container_name: angular-bb

@@ -9,7 +9,7 @@
     "build:dev": "ng build --configuration=development",
     "analyze": "ng build && source-map-explorer dist/angular-bb/**/*.js",
     "knip": "npx knip --cache --reporter symbols --performance",
-    "test": "ng test",
+    "test": "ng test --watch=false --browsers=ChromeHeadless",
     "commitlint": "commitlint",
     "lint": "eslint --fix",
     "format": "prettier --write",

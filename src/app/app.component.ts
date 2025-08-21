@@ -6,9 +6,12 @@ import { RouterOutlet } from "@angular/router";
   imports: [RouterOutlet],
   standalone: true,
   template: `
+    <h1 id="title">{{ title }}</h1>
     <div class="!max-w-[1200px] mx-auto">
       <router-outlet></router-outlet>
     </div>
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  title = "Angular Bootstrap Boilerplate";
+}
