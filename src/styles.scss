@@ -2,9 +2,11 @@
 @use "./styles/font";
 @use "./styles/utils";
 
-body {
-  background-color: darkgrey;
+@plugin "daisyui" {
+  themes: dracula --default;
+}
 
+body {
   * {
     font-family: "Poppins";
   }

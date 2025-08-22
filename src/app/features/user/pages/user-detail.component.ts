@@ -24,7 +24,7 @@ import { UserService } from "../services";
         <div>loading...</div>
       }
     </div>
-    <button (click)="router.navigateByUrl('/home/user')">Back List</button>
+    <button class="app-btn-primary" (click)="router.navigateByUrl('/home/user')">Back List</button>
   `,
 })
 export class UserDetailComponent implements OnInit {

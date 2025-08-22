@@ -8,7 +8,7 @@ import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="styled-box">Forbidden Page (403)</div>
-    <button (click)="location.back()">Back</button>
+    <button class="app-btn-primary" (click)="location.back()">Back</button>
   `,
 })
 export class ForbiddenPageComponent {

@@ -9,10 +9,16 @@ import { Post } from "../models";
   template: `
     @defer (on viewport) {
       @let p = data();
-      <div class="styled-box !min-h-full">
-        <h3 class="underline">[Post {{ p.id }}] {{ p.title }}</h3>
-        <div>{{ p.body }}</div>
-        <button (click)="router.navigateByUrl('/home/post/' + p.id)">Read more</button>
+      <div class="card bg-base-200 mb-[16px]">
+        <div class="card-body">
+          <h2 class="card-title text-warning">[Post {{ p.id }}] {{ p.title }}</h2>
+          <p>{{ p.body }}</p>
+          <div class="justify-end card-actions">
+            <button class="app-btn-primary" (click)="router.navigateByUrl('/home/post/' + p.id)">
+              Read more
+            </button>
+          </div>
+        </div>
       </div>
     } @placeholder {
       <div class="h-[200px]"></div>

@@ -11,7 +11,7 @@ import { UserService } from "../services";
   standalone: true,
   template: `
     <div class="styled-box">
-      <div>user Listing Page</div>
+      <div class="divider text-accent">User Listing Page</div>
       @let users = users$ | async;
       @let data = users?.data;
       @if (data) {
@@ -23,7 +23,7 @@ import { UserService } from "../services";
       } @else if (users?.error) {
         <div class="text-[red]">Loading users failed....</div>
       } @else {
-        <div class="text-center">Loading...</div>
+        <span class="loading loading-spinner loading-xl"></span>
       }
     </div>
   `,

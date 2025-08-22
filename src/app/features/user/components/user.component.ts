@@ -9,10 +9,16 @@ import { User } from "../models";
   template: `
     @defer (on viewport) {
       @let u = data();
-      <div class="styled-box !min-h-full">
-        <h3 class="underline">[User {{ u.id }}] {{ u.name }}</h3>
-        <div>{{ u.phone }}</div>
-        <button (click)="router.navigateByUrl('/home/user/' + u.id)">Read more</button>
+      <div class="card bg-base-200 mb-[16px]">
+        <div class="card-body">
+          <h2 class="card-title text-warning">[User {{ u.id }}] {{ u.name }}</h2>
+          <p>{{ u.phone }}</p>
+          <div class="justify-end card-actions">
+            <button class="app-btn-primary" (click)="router.navigateByUrl('/home/user/' + u.id)">
+              Read more
+            </button>
+          </div>
+        </div>
       </div>
     } @placeholder {
       <div class="h-[200px]"></div>

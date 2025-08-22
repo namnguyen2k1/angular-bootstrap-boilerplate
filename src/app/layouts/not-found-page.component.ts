@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="styled-box">Not Found Page (404)</div>
-    <button (click)="router.navigateByUrl('/home')">Back Home</button>
+    <button class="app-btn-primary" (click)="router.navigateByUrl('/home')">Back Home</button>
   `,
 })
 export class NotFoundPageComponent {

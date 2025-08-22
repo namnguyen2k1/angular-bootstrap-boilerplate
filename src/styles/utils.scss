@@ -1,0 +1,28 @@
+.styled-box {
+  min-height: 200px;
+  min-width: 500px;
+  max-width: 1200px;
+  border: 1px solid peru;
+  border-radius: 8px;
+  padding: 4px 8px;
+  margin: 4px;
+}
+
+.gradient-text {
+  font-size: 4rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  background: linear-gradient(45deg, #ff69b4, #800080);
+  background-clip: text;
+  color: transparent;
+  -webkit-background-clip: text;
+}
+
+.app-btn-primary {
+  @apply btn btn-xs btn-soft btn-primary;
+}
+
+.app-btn-accent {
+  @apply btn btn-xs btn-soft btn-accent;
+}

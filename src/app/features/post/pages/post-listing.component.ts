@@ -11,7 +11,7 @@ import { PostService } from "../services";
   standalone: true,
   template: `
     <div class="styled-box">
-      <div>Post Listing Page</div>
+      <div class="divider text-accent">Post Listing Page</div>
       @let posts = posts$ | async;
       @let data = posts?.data;
       @if (data) {
@@ -23,7 +23,7 @@ import { PostService } from "../services";
       } @else if (posts?.error) {
         <div class="text-[red]">Loading posts failed....</div>
       } @else {
-        <div class="text-center">Loading...</div>
+        <span class="loading loading-spinner loading-xl"></span>
       }
     </div>
   `,

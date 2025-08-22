@@ -8,7 +8,7 @@ import { Router } from "@angular/router";
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="styled-box">Register Page</div>
-    <button (click)="router.navigateByUrl('/auth/login')">login</button>
+    <button class="app-btn-primary" (click)="router.navigateByUrl('/auth/login')">login</button>
   `,
 })
 export class RegisterComponent {

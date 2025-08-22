@@ -24,7 +24,7 @@ import { PostService } from "../services";
         <div>loading...</div>
       }
     </div>
-    <button (click)="router.navigateByUrl('/home/post')">Back List</button>
+    <button class="app-btn-primary" (click)="router.navigateByUrl('/home/post')">Back List</button>
   `,
 })
 export class PostDetailComponent implements OnInit {
