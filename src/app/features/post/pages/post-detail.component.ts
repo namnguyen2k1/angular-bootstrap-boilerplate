@@ -34,6 +34,6 @@ export class PostDetailComponent implements OnInit {
   post$?: Observable<FetchState<Post>>;
 
   ngOnInit() {
-    this.post$ = this.postService.getPostById(this.id()).pipe(toFetchState());
+    this.post$ = this.postService.getPostDetailById(this.id()).pipe(toFetchState());
   }
 }

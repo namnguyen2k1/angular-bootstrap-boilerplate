@@ -1,6 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, input, output } from "@angular/core";
 import { Router } from "@angular/router";
 import { Post } from "../models";
+
+export interface PostSubmitEvent {
+  type: "delete" | "update";
+  data: Post;
+}
 
 @Component({
   standalone: true,
@@ -17,6 +22,7 @@ import { Post } from "../models";
             <button class="app-btn-primary" (click)="router.navigateByUrl('/home/post/' + p.id)">
               Read more
             </button>
+            <button class="app-btn-primary" (click)="submitDelete()">Delete</button>
           </div>
         </div>
       </div>
@@ -28,4 +34,12 @@ import { Post } from "../models";
 export class PostComponent {
   router = inject(Router);
   data = input.required<Post>();
+  submitEvent = output<PostSubmitEvent>();
+
+  submitDelete() {
+    this.submitEvent.emit({
+      type: "delete",
+      data: this.data(),
+    });
+  }
 }
