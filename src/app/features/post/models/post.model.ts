@@ -4,14 +4,14 @@ export class Post {
   title = "";
   body = "";
 
-  static create(input?: any) {
-    const m = new Post();
+  static create(input?: Partial<Post>) {
+    const model = new Post();
 
-    m.userId = input?.userId ?? m.userId;
-    m.id = input?.id ?? m.id;
-    m.title = input?.title ?? m.title;
-    m.body = input?.body ?? m.body;
+    model.userId = input?.userId ?? model.userId;
+    model.id = input?.id ?? model.id;
+    model.title = input?.title ?? model.title;
+    model.body = input?.body ?? model.body;
 
-    return m;
+    return model;
   }
 }

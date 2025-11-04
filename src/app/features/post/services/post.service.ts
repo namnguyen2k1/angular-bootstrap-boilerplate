@@ -1,51 +1,107 @@
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, map, of } from "rxjs";
+import { catchError, finalize, throwError } from "rxjs";
 import { PostApi } from "../apis";
 import { Post } from "../models";
+import { PostStore } from "./post-store.service";
 
 @Injectable({
   providedIn: "root",
 })
 export class PostService {
-  private readonly PostApi = inject(PostApi);
-  private _posts$ = new BehaviorSubject<{
-    data: Post[];
-    expired: number;
-  }>({ data: [], expired: 0 });
+  private readonly postApi = inject(PostApi);
+  private readonly postStore = inject(PostStore);
 
-  get posts() {
-    return this._posts$.value.data;
-  }
-
-  clearCache() {
-    this._posts$.next({ data: [], expired: 0 });
+  get postState() {
+    return this.postStore.state;
   }
 
   isExpired() {
-    const expired = Date.now() > this._posts$.value.expired;
+    const expired = Date.now() > this.postStore.state().expired;
     if (expired) {
-      this.clearCache();
+      this.postStore.reset();
     }
     return expired;
   }
 
-  getAllPosts() {
-    if (this.posts.length && !this.isExpired()) {
-      return of(this.posts);
+  fetchAllPosts() {
+    if (!this.isExpired()) {
+      console.log("data not expired");
+      return;
     }
 
-    return this.PostApi.getAll({ limit: 100 }).pipe(
-      map((data) => {
-        this._posts$.next({
-          data,
-          expired: Date.now() + 3 * 60 * 1000, // expires in 3 minutes
-        });
-        return data;
-      }),
-    );
+    this.postStore.setLoading(true);
+    this.postApi
+      .getAll({ limit: 20 })
+      .pipe(
+        catchError((error) => {
+          console.log("fetch all post", error);
+          return throwError(() => error);
+        }),
+        finalize(() => {
+          this.postStore.setLoading(false);
+        }),
+      )
+      .subscribe((data) => {
+        const expired = Date.now() + 1 * 60 * 1000;
+        this.postStore.setData(data, expired);
+      });
   }
 
-  getPostById(id: number) {
-    return this.PostApi.getById(id);
+  getPostDetailById(id: number) {
+    return this.postApi.getById(id);
+  }
+
+  createPost(data: Post, loading = true) {
+    this.postStore.setLoading(loading);
+    this.postApi
+      .addPost(data)
+      .pipe(
+        catchError((error) => {
+          console.log("create-post", error);
+          return throwError(() => error);
+        }),
+        finalize(() => {
+          this.postStore.setLoading(false);
+        }),
+      )
+      .subscribe((post) => {
+        this.postStore.addNewData(post);
+      });
+  }
+
+  updatePost(id: number, data: Partial<Post>, loading = true) {
+    this.postStore.setLoading(loading);
+    this.postApi
+      .updatePost(id, data)
+      .pipe(
+        catchError((error) => {
+          console.log("update-post", error);
+          return throwError(() => error);
+        }),
+        finalize(() => {
+          this.postStore.setLoading(false);
+        }),
+      )
+      .subscribe((post) => {
+        this.postStore.updateDataById(id, post);
+      });
+  }
+
+  deletePostById(id: number, loading = true) {
+    this.postStore.setLoading(loading);
+    this.postApi
+      .deletePost(id)
+      .pipe(
+        catchError((error) => {
+          console.log("delete-post", error);
+          return throwError(() => error);
+        }),
+        finalize(() => {
+          this.postStore.setLoading(false);
+        }),
+      )
+      .subscribe(() => {
+        this.postStore.deleteDataById(id);
+      });
   }
 }
